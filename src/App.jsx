@@ -5,12 +5,15 @@ import HostFlow from './pages/HostFlow.jsx';
 import VendorMarketplace from './pages/VendorMarketplace.jsx';
 import JoinVendor from './pages/JoinVendor.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import DiscoverPage from './pages/DiscoverPage.jsx';
+import EventDetail from './pages/EventDetail.jsx';
 import Nav from './components/Nav.jsx';
 
 function AppInner() {
   const { user, loading } = useAuth();
-  const [page, setPage] = useState('host');
+  const [page, setPage] = useState('discover');
   const [showAuth, setShowAuth] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   if (loading) {
     return (
@@ -22,13 +25,21 @@ function AppInner() {
 
   if (showAuth) return <AuthPage onClose={() => setShowAuth(false)} />;
 
+  if (selectedEvent) return (
+    <div style={{ background: '#08060f', minHeight: '100vh', color: '#f0ecff', fontFamily: 'Inter, sans-serif' }}>
+      <Nav page={page} setPage={(p) => { setPage(p); setSelectedEvent(null); }} user={user} onAuthClick={() => setShowAuth(true)} />
+      <EventDetail event={selectedEvent} onBack={() => setSelectedEvent(null)} />
+    </div>
+  );
+
   return (
     <div style={{ background: '#08060f', minHeight: '100vh', color: '#f0ecff', fontFamily: 'Inter, sans-serif' }}>
       <Nav page={page} setPage={setPage} user={user} onAuthClick={() => setShowAuth(true)} />
-      {page === 'host'    && <HostFlow onAuthRequired={() => setShowAuth(true)} />}
-      {page === 'vendors' && <VendorMarketplace />}
-      {page === 'join'    && <JoinVendor onAuthRequired={() => setShowAuth(true)} />}
-      {page === 'dash'    && (user ? <Dashboard setPage={setPage} /> : <AuthPage onClose={() => setPage('host')} />)}
+      {page === 'discover' && <DiscoverPage onEventClick={setSelectedEvent} />}
+      {page === 'host'     && <HostFlow onAuthRequired={() => setShowAuth(true)} />}
+      {page === 'vendors'  && <VendorMarketplace />}
+      {page === 'join'     && <JoinVendor onAuthRequired={() => setShowAuth(true)} />}
+      {page === 'dash'     && (user ? <Dashboard setPage={setPage} /> : <AuthPage onClose={() => setPage('discover')} />)}
     </div>
   );
 }

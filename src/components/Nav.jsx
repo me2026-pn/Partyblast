@@ -4,10 +4,11 @@ export default function Nav({ page, setPage, onAuthClick }) {
   const { user, signOut } = useAuth();
 
   const tabs = [
-    { id: 'host',    label: 'Host an event' },
-    { id: 'vendors', label: 'Find vendors' },
-    { id: 'join',    label: 'Join as vendor' },
-    { id: 'dash',    label: 'Dashboard' },
+    { id: 'discover', label: '🌍 Discover' },
+    { id: 'host',     label: 'Host an event' },
+    { id: 'vendors',  label: 'Find vendors' },
+    { id: 'join',     label: 'Join as vendor' },
+    { id: 'dash',     label: 'Dashboard' },
   ];
 
   return (
@@ -23,7 +24,7 @@ export default function Nav({ page, setPage, onAuthClick }) {
       top: 0,
       zIndex: 100,
     }}>
-      <div style={{
+      <div onClick={() => setPage('discover')} style={{
         fontFamily: 'Syne, sans-serif',
         fontWeight: 800,
         fontSize: 18,
@@ -33,6 +34,7 @@ export default function Nav({ page, setPage, onAuthClick }) {
         backgroundClip: 'text',
         marginRight: 16,
         whiteSpace: 'nowrap',
+        cursor: 'pointer',
       }}>PartyBlast</div>
 
       {tabs.map(t => (
@@ -50,6 +52,7 @@ export default function Nav({ page, setPage, onAuthClick }) {
             fontWeight: 500,
             fontFamily: 'Inter, sans-serif',
             transition: 'all .2s',
+            whiteSpace: 'nowrap',
           }}
         >{t.label}</button>
       ))}
@@ -58,16 +61,10 @@ export default function Nav({ page, setPage, onAuthClick }) {
         {user ? (
           <>
             <span style={{ fontSize: 12, color: '#8b83b0' }}>{user.email}</span>
-            <button
-              onClick={signOut}
-              style={{ padding: '6px 14px', fontSize: 12, borderRadius: 6, border: '1px solid #2a2448', background: 'transparent', color: '#8b83b0', cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}
-            >Sign out</button>
+            <button onClick={signOut} style={{ padding: '6px 14px', fontSize: 12, borderRadius: 6, border: '1px solid #2a2448', background: 'transparent', color: '#8b83b0', cursor: 'pointer', fontFamily: 'Inter, sans-serif' }}>Sign out</button>
           </>
         ) : (
-          <button
-            onClick={onAuthClick}
-            style={{ padding: '7px 16px', fontSize: 13, borderRadius: 8, border: 'none', background: 'linear-gradient(90deg,#7c3aed,#db2777)', color: '#fff', cursor: 'pointer', fontFamily: 'Syne, sans-serif', fontWeight: 700 }}
-          >Sign in</button>
+          <button onClick={onAuthClick} style={{ padding: '7px 16px', fontSize: 13, borderRadius: 8, border: 'none', background: 'linear-gradient(90deg,#7c3aed,#db2777)', color: '#fff', cursor: 'pointer', fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>Sign in</button>
         )}
       </div>
     </nav>
